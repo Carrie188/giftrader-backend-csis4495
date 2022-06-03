@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
 
 
 @Entity
@@ -23,11 +25,16 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
+	@NotBlank
 	@Column(name = "username")
 	private String username;
 
+	@NotBlank
 	@Column(name = "password")
 	private String password;
+	
+	@Transient
+    private String passwordConfirm;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Friend> friends = new HashSet<>();
@@ -82,5 +89,7 @@ public class User {
 		this.friends.remove(friend);
 		friend.setUser(null);
 	}
+	
+
 	
 }
