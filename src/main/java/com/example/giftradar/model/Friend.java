@@ -33,9 +33,7 @@ public class Friend {
 	
 	@Column(name = "age")
 	private int age;
-	
-	@Column(name = "birthday")
-	private String birthday;
+
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "user_id", nullable = false)
@@ -46,11 +44,10 @@ public class Friend {
 		
 	}
 	
-	public Friend(String name,int age, String gender, String birthday) {
+	public Friend(String name,int age, String gender) {
 		this.name = name; 
 		this.age = age;
 		this.gender = gender;
-		this.birthday = birthday;
 	}
 
 	public long getId() {
@@ -83,14 +80,6 @@ public class Friend {
 
 	public void setAge(int age) {
 		this.age = age;
-	}
-
-	public String getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
 	}
 
 	public User getUser() {

@@ -9,6 +9,13 @@ public class LoginRequest {
 	@NotBlank
 	private String password;
 
+	// constructor
+	public LoginRequest(@NotBlank String username, @NotBlank String password) {
+		super();
+		this.username = username;
+		this.password = password;
+	}
+
 	public String getUsername() {
 		return username;
 	}
