@@ -5,7 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +21,17 @@ import com.example.giftradar.model.User;
 import com.example.giftradar.repository.FriendRepository;
 import com.example.giftradar.repository.UserRepository;
 import com.example.giftradar.response.MessageResponse;
+import com.example.giftradar.security.JwtUtils;
 
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class userController {
+	
+	@Autowired
+	AuthenticationManager authenticationManager;
+	@Autowired
+	JwtUtils jwtUtils;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -45,7 +53,7 @@ public class userController {
 	}
 	
 	@PutMapping("/user/{id}")
-	public ResponseEntity<?> addNewFriendToUser(@PathVariable("id") long id, @RequestBody User updateUser) {
+	public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody User updateUser) {
 		Optional<User> userData = userRepository.findById(id);
 		
 		if (userData.isPresent()) {
@@ -66,7 +74,7 @@ public class userController {
 	
 	
 	@PutMapping("/user/{id}/addnewfriend")
-	public ResponseEntity<?> addNewFriendToUser(@PathVariable("id") long id, @RequestBody Friend newFriend) {
+	public ResponseEntity<?> addNewFriend(@PathVariable("id") long id, @RequestBody Friend newFriend) {
 		Optional<User> userData = userRepository.findById(id);
 		
 		if (userData.isPresent()) {
@@ -82,14 +90,12 @@ public class userController {
 
 	}
 	
-	@PutMapping("/user/{id}/removefriend")
-	public ResponseEntity<?> removeFriendFromUser(@PathVariable("id") long id, @RequestBody Friend newFriend) {
-		Optional<User> userData = userRepository.findById(id);
+	@DeleteMapping("/user/removefriend/{id}")
+	public ResponseEntity<?> removeFriend(@PathVariable("id") long id) {
+		Optional<Friend> friendData = friendRepository.findById(id);
 		
-		if (userData.isPresent()) {
-			User _user = userData.get();
-			_user.removeFriend(newFriend);
-			userRepository.save(_user);
+		if (friendData.isPresent()) {
+			friendRepository.deleteById(id);
 			MessageResponse msg = new MessageResponse("Remove friend Successfully!");
 			return new ResponseEntity<>(msg, HttpStatus.OK);
 		} else {

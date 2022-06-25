@@ -22,15 +22,18 @@ public class UserDetailsImpl implements UserDetails {
 	private Long id;
 
 	private String username;
+	
+	private String email;
 
 	@JsonIgnore
 	private String password;
 	
 	
-	public UserDetailsImpl(Long id, String username,String password) {
+	public UserDetailsImpl(Long id, String username, String email, String password) {
 		    this.id = id;
 		    this.username = username;
 		    this.password = password;
+		    this.email = email;
 	}
 	
 	public static UserDetailsImpl build(User user) {
@@ -38,6 +41,7 @@ public class UserDetailsImpl implements UserDetails {
 	    return new UserDetailsImpl(
 	        user.getId(), 
 	        user.getUsername(),
+	        user.getEmail(),
 	        user.getPassword());
 	  }
 	
@@ -74,6 +78,14 @@ public class UserDetailsImpl implements UserDetails {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public void setPassword(String password) {
