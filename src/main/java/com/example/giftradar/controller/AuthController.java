@@ -85,10 +85,7 @@ public class AuthController {
 				    MessageResponse msg =  new MessageResponse("User registered successfully!");
 				    return new ResponseEntity<>(msg,HttpStatus.OK);
 			    }
-			  
-
-
-			    
+			   
 			    
 		  } catch (Exception e) {
 				MessageResponse msg = new MessageResponse("Server Error");
